@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de Privacidade — Lumio AI</title>
+  <style>
+    :root {
+      --bg: #0f0f14;
+      --surface: #1a1a24;
+      --border: #2e2e42;
+      --accent: #a78bfa;
+      --accent-dim: #7c3aed33;
+      --text: #e2e2f0;
+      --muted: #9090b0;
+      --warn-bg: #2a1f00;
+      --warn-border: #f59e0b;
+      --warn-text: #fcd34d;
+      --link: #818cf8;
+      --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+      padding: 0 16px 60px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    header { text-align: center; padding: 48px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+    header .logo { font-size: 13px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    header h1 { font-size: clamp(22px,5vw,30px); font-weight: 700; color: #fff; line-height: 1.3; }
+    header .meta { margin-top: 10px; font-size: 13px; color: var(--muted); }
+    nav { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 16px; margin-bottom: 36px; font-size: 13px; display: flex; gap: 6px 24px; flex-wrap: wrap; }
+    nav a { color: var(--link); text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    h2 { font-size: 19px; font-weight: 700; color: var(--accent); margin: 44px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 15px; font-weight: 600; color: #c4b5fd; margin: 28px 0 10px; }
+    p { margin-bottom: 14px; }
+    strong { color: #fff; }
+    a { color: var(--link); }
+    a:hover { color: var(--accent); }
+    ul, ol { padding-left: 24px; margin-bottom: 14px; }
+    li { margin-bottom: 6px; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+    code { background: var(--accent-dim); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-size: .88em; font-family: monospace; }
+    .note { background: #12181f; border-left: 4px solid #3b82f6; border-radius: 0 var(--radius) var(--radius) 0; padding: 12px 16px; margin: 16px 0; font-size: 13.5px; color: #93c5fd; }
+    footer { text-align: center; font-size: 12px; color: var(--muted); margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border); }
+    footer a { color: var(--muted); text-decoration: underline; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">Lumio AI</div>
+  <h1>Política de Privacidade</h1>
+  <div class="meta">Última atualização: 31 de julho de 2026</div>
+</header>
+<nav>
+  <a href="index.html">Início</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="terms.html">Termos de Uso</a>
+</nav>
+
+<p>Esta Política de Privacidade ("Política") explica como o <strong>Lumio AI</strong> ("Aplicativo", "nós" ou "nosso") coleta, usa, compartilha e protege os dados pessoais dos usuários ("Usuário" ou "você"). As informações de identificação e contato do desenvolvedor estão disponíveis na ficha oficial do Aplicativo na loja de distribuição em que ele foi obtido.</p>
+<p>Esta Política complementa os nossos <a href="terms.html"><strong>Termos de Uso</strong></a> e deve ser lida em conjunto com eles. Ao utilizar o Lumio AI, você concorda com as práticas aqui descritas.</p>
+<p><strong>Em caso de conflito entre uma versão traduzida e o idioma original deste documento, prevalecerá o idioma original</strong>, exceto quando a legislação aplicável ao Usuário exigir de forma cogente que a versão traduzida prevaleça.</p>
+
+<hr />
+
+<h2 id="s1">1. QUE DADOS COLETAMOS</h2>
+
+<h3>1.1. Dados fornecidos diretamente por você</h3>
+<ul>
+  <li><strong>Dados de cadastro:</strong> e-mail e senha (armazenada apenas em hash criptografado), ou dados básicos de perfil via autenticação social (ex.: Google Sign-In).</li>
+  <li><strong>Mensagens de conversa:</strong> o conteúdo das mensagens trocadas com os Lumis.</li>
+  <li><strong>Ficha Pessoal e testes de personalidade</strong> <em>(recurso Pro)</em>: informações opcionais sobre você, que podem incluir <strong>dados pessoais sensíveis</strong> (ex.: saúde mental ou estado psicológico).</li>
+  <li><strong>PIN local:</strong> armazenado e verificado <strong>exclusivamente no seu dispositivo</strong> — nunca transmitido ou visível para nós.</li>
+</ul>
+
+<h3>1.2. Dados coletados automaticamente</h3>
+<ul>
+  <li><strong>Memória Persistente:</strong> informações que os Lumis retêm a partir do que você compartilha espontaneamente, para dar continuidade às interações futuras.</li>
+  <li><strong>Dados técnicos do dispositivo:</strong> modelo, versão do SO, identificador de instalação, idioma configurado e logs de falhas (<em>crash logs</em>).</li>
+  <li><strong>Endereço IP:</strong> processado transitoriamente pela infraestrutura para segurança e operação.</li>
+  <li><strong>Token de notificação push:</strong> usado exclusivamente para enviar a notificação diária (Cláusula 11).</li>
+  <li><strong>Registros de uso agregados:</strong> contagem de mensagens para aplicar limites de plano e política de uso razoável.</li>
+</ul>
+
+<h3>1.3. Dados que não coletamos</h3>
+<p>O Lumio AI <strong>não coleta</strong> dados de localização geográfica, <strong>não acessa</strong> lista de contatos, <strong>não coleta</strong> dados biométricos, e <strong>não coleta nem armazena</strong> dados de pagamento — processados exclusivamente pelo Google Play Billing.</p>
+
+<hr />
+
+<h2 id="s2">2. COMO E POR QUE USAMOS SEUS DADOS</h2>
+<p>Usamos os dados para:</p>
+<ul>
+  <li>Operar e disponibilizar as conversas com os Lumis;</li>
+  <li>Personalizar interações com base na Ficha Pessoal e na Memória Persistente;</li>
+  <li>Criar, autenticar e proteger sua conta;</li>
+  <li>Processar assinaturas e compras com o Google Play Billing;</li>
+  <li>Enviar a notificação diária (Cláusula 11);</li>
+  <li>Processar denúncias e aprimorar moderação;</li>
+  <li>Aplicar política de uso razoável e prevenir fraudes;</li>
+  <li>Cumprir obrigações legais.</li>
+</ul>
+<p><strong>Não utilizamos</strong> dados de saúde mental para decisões sobre emprego, crédito ou seguro, nem os compartilhamos publicamente sem consentimento. <strong>Não vendemos</strong> seus dados a terceiros.</p>
+
+<hr />
+
+<h2 id="s3">3. BASE LEGAL PARA O TRATAMENTO</h2>
+<p>Tratamos seus dados com base em: (i) seu <strong>consentimento</strong>, especialmente para dados sensíveis; (ii) <strong>execução do contrato</strong> firmado pelos Termos de Uso; (iii) <strong>obrigação legal</strong>; e (iv) <strong>interesse legítimo</strong> em manter segurança e qualidade do Serviço, quando não prevalecer sobre seus direitos fundamentais.</p>
+
+<hr />
+
+<h2 id="s4">4. COMPARTILHAMENTO DE DADOS COM TERCEIROS</h2>
+<p>Não vendemos seus dados. Compartilhamos apenas com:</p>
+
+<h3>4.1. Provedor de Infraestrutura de Inteligência Artificial</h3>
+<p>Suas mensagens são enviadas, via HTTPS/TLS, ao provedor de IA para gerar as respostas dos Lumis. Esse provedor processa os dados <strong>exclusivamente para gerar a resposta solicitada</strong>. Buscamos garantir — contratualmente ou por configuração técnica — que esses dados não sejam usados para treinar modelos de forma que identifique o Usuário.</p>
+
+<h3>4.2. Provedor de Backend e Autenticação</h3>
+<p>Utilizamos o <strong>Supabase</strong> para autenticação, sincronização e armazenamento de dados de conta.</p>
+
+<h3>4.3. Google Play</h3>
+<p>Pagamentos, assinaturas e autenticação social (Google Sign-In) são processados pelo Google, sujeitos à política de privacidade do Google. Não temos acesso aos dados de pagamento do Usuário.</p>
+
+<h3>4.4. Autoridades Públicas</h3>
+<p>Podemos divulgar dados quando exigido por lei, ordem judicial ou solicitação legítima de autoridade competente.</p>
+
+<h3>4.5. Sucessão Empresarial</h3>
+<p>Em caso de fusão, aquisição ou venda de ativos, seus dados podem ser transferidos como parte da operação, sujeitos a proteções equivalentes.</p>
+
+<hr />
+
+<h2 id="s5">5. TRANSFERÊNCIA INTERNACIONAL DE DADOS</h2>
+<p>Provedores de infraestrutura podem processar dados em servidores fora do seu país. <strong>Ao usar o Aplicativo, você reconhece e consente com essa transferência internacional</strong>, ciente de que o país de destino pode não ter proteção equivalente à do seu país.</p>
+
+<hr />
+
+<h2 id="s6">6. SEGURANÇA DOS DADOS</h2>
+<ul>
+  <li><strong>No dispositivo:</strong> criptografia <strong>AES-GCM</strong> via <strong>Android Keystore</strong>.</li>
+  <li><strong>Em trânsito:</strong> protocolo <strong>HTTPS/TLS</strong>.</li>
+  <li><strong>No backend:</strong> controles de acesso técnicos e organizacionais no Supabase.</li>
+</ul>
+<p>Nenhum método de transmissão ou armazenamento é 100% seguro. Embora adotemos medidas razoáveis, não podemos garantir segurança absoluta.</p>
+
+<hr />
+
+<h2 id="s7">7. RETENÇÃO E EXCLUSÃO DE DADOS</h2>
+<ul>
+  <li>Mantemos seus dados enquanto sua conta estiver ativa.</li>
+  <li>Você pode excluir sua conta nas configurações do Aplicativo. Após a exclusão, seus dados são removidos dos sistemas ativos em até <strong>30 dias</strong>, ressalvados prazos legais.</li>
+  <li>Ao deixar de ser assinante Pro, dados da Ficha Pessoal e Memória Persistente ficam inacessíveis por até <strong>90 dias</strong> (reativando com nova assinatura); após esse prazo, podem ser excluídos automaticamente.</li>
+  <li>Backups podem reter dados por período adicional limitado por razões técnicas.</li>
+</ul>
+
+<hr />
+
+<h2 id="s8">8. SEUS DIREITOS SOBRE OS DADOS</h2>
+<p>Dependendo da legislação do seu país (GDPR, LGPD, CCPA, PIPEDA ou equivalente), você pode ter o direito de:</p>
+<ul>
+  <li>Confirmar a existência de tratamento;</li>
+  <li>Acessar seus dados;</li>
+  <li>Corrigir dados incompletos ou desatualizados;</li>
+  <li>Solicitar anonimização, bloqueio ou eliminação de dados desnecessários;</li>
+  <li>Solicitar a portabilidade dos dados;</li>
+  <li>Solicitar a eliminação de dados tratados com base em consentimento;</li>
+  <li>Obter informações sobre com quais terceiros seus dados foram compartilhados;</li>
+  <li>Revogar o consentimento para dados sensíveis (Ficha Pessoal) a qualquer momento;</li>
+  <li>Opor-se a tratamentos baseados em interesse legítimo.</li>
+</ul>
+<p>Para exercer esses direitos, entre em contato pelos canais da Cláusula 13. Respondemos dentro de prazo razoável, observando os prazos legais aplicáveis.</p>
+
+<hr />
+
+<h2 id="s9">9. CRIANÇAS E ADOLESCENTES</h2>
+<p>O Lumio AI é destinado exclusivamente a maiores de 18 anos e não coleta dados de menores intencionalmente. Caso tomemos conhecimento de dados coletados de um menor, eles serão excluídos assim que razoavelmente possível.</p>
+
+<hr />
+
+<h2 id="s10">10. IDENTIFICADORES, DIAGNÓSTICO E SDKs DE TERCEIROS</h2>
+<p>O Aplicativo pode utilizar bibliotecas de terceiros (<em>SDKs</em>) para diagnóstico de falhas (<em>crash reporting</em>) ou métricas agregadas e anônimas de uso, para manter a estabilidade e qualidade do Serviço.</p>
+<div class="note">As categorias exatas de dados coletados por SDKs integrados são declaradas no formulário de Data Safety do Google Play Console, em conformidade com esta Política.</div>
+
+<hr />
+
+<h2 id="s11">11. NOTIFICAÇÕES PUSH</h2>
+<p>Caso você tenha permitido notificações, utilizamos um token de dispositivo exclusivamente para entregar a notificação diária. Você pode desativar as notificações a qualquer momento nas configurações do dispositivo ou do Aplicativo.</p>
+
+<hr />
+
+<h2 id="s12">12. ALTERAÇÕES A ESTA POLÍTICA</h2>
+<p>Podemos atualizar esta Política periodicamente. Alterações significativas serão refletidas na data no topo do documento e notificadas no Aplicativo. O uso continuado constitui aceitação tácita da nova versão.</p>
+
+<hr />
+
+<h2 id="s13">13. CONTATO E ENCARREGADO DE PRIVACIDADE</h2>
+<p>Dúvidas, solicitações ou exercício dos direitos da Cláusula 8:</p>
+<ul>
+  <li><strong>E-mail de Privacidade/Suporte:</strong> <code>suporte.lumioai@gmail.com</code></li>
+</ul>
+<p>Quando a legislação exigir a designação formal de um responsável pela proteção de dados ("Encarregado" pela LGPD ou "DPO" pelo GDPR), faremos essa designação e divulgaremos o contato correspondente.</p>
+
+<footer>
+  <p>&copy; 2026 Lumio AI. Todos os direitos reservados.</p>
+  <p style="margin-top:6px;"><a href="index.html">Início</a> &nbsp;·&nbsp; <a href="terms.html">Termos de Uso</a></p>
+</footer>
+</body>
+</html>
