@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOS & Linhas de Apoio — Lumio AI</title>
+  <meta name="description" content="Linhas de apoio emocional, prevenção ao suicídio e serviços de emergência por país — Lumio AI." />
+  <style>
+    :root {
+      --bg: #060606;
+      --surface: #14141d;
+      --surface-card: #191924;
+      --surface-hover: #222232;
+      --border: #29293d;
+      --accent: #a78bfa;
+      --accent-dim: rgba(167, 139, 250, 0.15);
+      --text: #e2e2f0;
+      --muted: #9595b8;
+      --warn-bg: #2a1f00;
+      --warn-border: #f59e0b;
+      --warn-text: #fcd34d;
+      --danger-bg: rgba(239, 68, 68, 0.12);
+      --danger-border: rgba(239, 68, 68, 0.4);
+      --danger-text: #fca5a5;
+      --danger-btn: #dc2626;
+      --danger-btn-hover: #ef4444;
+      --call-btn-bg: #252538;
+      --call-btn-hover: #33334c;
+      --link: #818cf8;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      padding: 0 16px 60px;
+      max-width: 960px;
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      text-align: center;
+      padding: 40px 0 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    header .logo {
+      font-size: 12px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    header h1 {
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    header p {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .urgent-banner {
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      border-left: 4px solid #ef4444;
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      color: #fee2e2;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .urgent-banner .icon {
+      font-size: 24px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .urgent-banner .content h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      border: none;
+      padding: 0;
+    }
+    .urgent-banner .content p {
+      font-size: 13.5px;
+      color: var(--danger-text);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    /* Controls: Search and Filters */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .search-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px 14px 44px;
+      font-size: 15px;
+      color: #fff;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+    }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 16px;
+      pointer-events: none;
+    }
+    .filters-wrapper {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .2s;
+    }
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #060606;
+      font-weight: 700;
+    }
+
+    /* Countries Grid */
+    .countries-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+      gap: 16px;
+    }
+    @media (max-width: 480px) {
+      .countries-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .country-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color .2s, transform .15s;
+    }
+    .country-card:hover {
+      border-color: #3e3e5c;
+    }
+
+    .country-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .country-flag {
+      font-size: 30px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .country-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .country-name {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .country-subname {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .lang-badge {
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    /* Services list */
+    .services-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .service-section-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .service-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .service-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .service-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f1f1fc;
+    }
+    .service-meta {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    /* Call / Action buttons */
+    .btn-call {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--call-btn-bg);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: background .2s, border-color .2s, transform .1s;
+      flex-shrink: 0;
+    }
+    .btn-call:hover {
+      background: var(--call-btn-hover);
+      border-color: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .btn-call:active {
+      transform: translateY(0);
+    }
+    .btn-call.crisis {
+      background: #7c2d12;
+      border-color: #ea580c;
+      color: #ffedd5;
+    }
+    .btn-call.crisis:hover {
+      background: #9a3412;
+      border-color: #f97316;
+    }
+    .btn-call.emergency {
+      background: #831843;
+      border-color: #db2777;
+      color: #fce7f3;
+    }
+    .btn-call.emergency:hover {
+      background: #9d174d;
+      border-color: #ec4899;
+    }
+
+    .badge-24h {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      background: rgba(34, 197, 94, 0.15);
+      color: #86efac;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+    .badge-free {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
+
+    /* Global resources box */
+    .global-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-top: 36px;
+    }
+    .global-box h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .global-box p {
+      color: var(--muted);
+      font-size: 13.5px;
+      margin-bottom: 16px;
+    }
+    .global-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .global-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: border-color .2s, transform .15s;
+    }
+    .global-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .global-card strong {
+      color: #fff;
+      font-size: 14px;
+    }
+    .global-card span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* No results message */
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      grid-column: 1 / -1;
+    }
+    .no-results h3 {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 50px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    footer a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Lumio AI</div>
+  <h1>Linhas de Apoio e Emergência</h1>
+  <p>Canais oficiais, gratuitos e humanos de apoio emocional e atendimento a crises nos países correspondentes aos idiomas do aplicativo.</p>
+</header>
+
+<div class="urgent-banner">
+  <div class="icon">⚠️</div>
+  <div class="content">
+    <h2>Em caso de perigo imediato à vida</h2>
+    <p>Se você ou alguém próximo está em risco físico iminente, ligue imediatamente para o número de emergência nacional do seu país ou dirija-se ao pronto-socorro mais próximo.</p>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-wrapper">
+    <span class="search-icon">🔍</span>
+    <input
+      type="search"
+      id="countrySearch"
+      class="search-input"
+      placeholder="Digite seu país, cidade, idioma ou número (ex: Brasil, 188, USA, 988, México, 日本, France...)"
+      autocomplete="off"
+    />
+  </div>
+  <div class="filters-wrapper" id="filterContainer">
+    <button class="filter-btn active" data-filter="all">Todos os países (39)</button>
+    <button class="filter-btn" data-filter="pt">🇧🇷 🇵🇹 Português</button>
+    <button class="filter-btn" data-filter="en">🇺🇸 🇬🇧 English</button>
+    <button class="filter-btn" data-filter="es">🇪🇸 🇲🇽 Español</button>
+    <button class="filter-btn" data-filter="fr">🇫🇷 🇧🇪 Français</button>
+    <button class="filter-btn" data-filter="de">🇩🇪 🇦🇹 Deutsch</button>
+    <button class="filter-btn" data-filter="it">🇮🇹 Italiano</button>
+    <button class="filter-btn" data-filter="ja">🇯🇵 日本語</button>
+    <button class="filter-btn" data-filter="ko">🇰🇷 한국어</button>
+    <button class="filter-btn" data-filter="ru">🇷🇺 Русский</button>
+    <button class="filter-btn" data-filter="hi">🇮🇳 हिन्दी</button>
+    <button class="filter-btn" data-filter="bn">🇧🇩 বাংলা</button>
+    <button class="filter-btn" data-filter="id">🇮🇩 Bahasa Indonesia</button>
+    <button class="filter-btn" data-filter="vi">🇻🇳 Tiếng Việt</button>
+  </div>
+</div>
+
+<div class="countries-grid" id="countriesGrid">
+
+  <!-- ==================== PORTUGUÊS ==================== -->
+
+  <!-- Brasil -->
+  <div class="country-card" data-lang="pt" data-keywords="brasil brazil portugues pt-br 188 cvv samu 192 193 190 sao paulo rio de janeiro brasilia salvador fortaleza belo horizonte curitiba">
+    <div class="country-header">
+      <div class="country-flag">🇧🇷</div>
+      <div class="country-info">
+        <div class="country-name">
+          Brasil
+          <span class="lang-badge">PT-BR</span>
+        </div>
+        <div class="country-subname">República Federativa do Brasil</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Apoio Emocional & Prevenção ao Suicídio</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">CVV — Centro de Valorização da Vida</div>
+            <div class="service-meta">Atendimento acolhedor e sigiloso <span class="badge-24h">24h</span><span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:188" class="btn-call crisis">📞 188</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergências Gerais</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">SAMU — Emergência Médica</div>
+            <div class="service-meta">Atendimento pré-hospitalar de urgência <span class="badge-24h">24h</span></div>
+          </div>
+          <a href="tel:192" class="btn-call emergency">📞 192</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Bombeiros (193) & Polícia Militar (190)</div>
+            <div class="service-meta">Resgate e segurança pública imediata</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:193" class="btn-call">193</a>
+            <a href="tel:190" class="btn-call">190</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portugal -->
+  <div class="country-card" data-lang="pt" data-keywords="portugal pt pt-pt portugues 1411 808242424 sns24 sos voz amiga 112 lisboa porto coimbra braga">
+    <div class="country-header">
+      <div class="country-flag">🇵🇹</div>
+      <div class="country-info">
+        <div class="country-name">
+          Portugal
+          <span class="lang-badge">PT-PT</span>
+        </div>
+        <div class="country-subname">República Portuguesa</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Apoio Psicológico & Prevenção ao Suicídio</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Linha Nacional de Prevenção do Suicídio</div>
+            <div class="service-meta">Apoio psicológico de crise <span class="badge-24h">24h</span><span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:1411" class="btn-call crisis">📞 1411</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">SNS 24 — Aconselhamento Psicológico</div>
+            <div class="service-meta">Linha de saúde pública (opção 4) <span class="badge-24h">24h</span></div>
+          </div>
+          <a href="tel:808242424" class="btn-call">📞 808 24 24 24</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">SOS Voz Amiga</div>
+            <div class="service-meta">Escuta emocional diária (15h30 – 00h30)</div>
+          </div>
+          <a href="tel:213544545" class="btn-call">📞 213 544 545</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergência Geral</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Número Europeu de Emergência</div>
+            <div class="service-meta">Polícia, Bombeiros e Ambulância <span class="badge-24h">24h</span></div>
+          </div>
+          <a href="tel:112" class="btn-call emergency">📞 112</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Angola -->
+  <div class="country-card" data-lang="pt" data-keywords="angola luanda portugues pt 111 cisp inema 115 bombeiros">
+    <div class="country-header">
+      <div class="country-flag">🇦🇴</div>
+      <div class="country-info">
+        <div class="country-name">
+          Angola
+          <span class="lang-badge">PT</span>
+        </div>
+        <div class="country-subname">República de Angola</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🚨 Emergência Nacional Integrada</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">CISP / INEMA (Emergência Integrada)</div>
+            <div class="service-meta">Emergência Médica, Polícia e Bombeiros <span class="badge-24h">24h</span><span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:111" class="btn-call emergency">📞 111</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Bombeiros & Proteção Civil</div>
+            <div class="service-meta">Resgate e combate a incêndios</div>
+          </div>
+          <a href="tel:115" class="btn-call">📞 115</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Moçambique -->
+  <div class="country-card" data-lang="pt" data-keywords="mocambique mozambique maputo portugues pt 119 112 117 198 capimz">
+    <div class="country-header">
+      <div class="country-flag">🇲🇿</div>
+      <div class="country-info">
+        <div class="country-name">
+          Moçambique
+          <span class="lang-badge">PT</span>
+        </div>
+        <div class="country-subname">República de Moçambique</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Apoio Psicossocial & Urgência Hospitalar</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Hospital Central de Maputo (Urgência)</div>
+            <div class="service-meta">Banco de Socorros e Crise Psiquiátrica <span class="badge-24h">24h</span></div>
+          </div>
+          <a href="tel:+25821357900" class="btn-call">📞 +258 21 357 900</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergências Gerais</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Polícia (119 / 112) & Ambulância (117)</div>
+            <div class="service-meta">Serviços de socorro e polícia nacional</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:119" class="btn-call emergency">119</a>
+            <a href="tel:117" class="btn-call emergency">117</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cabo Verde -->
+  <div class="country-card" data-lang="pt" data-keywords="cabo verde cape verde praia mindelo portugues pt 112 130 131 132">
+    <div class="country-header">
+      <div class="country-flag">🇨🇻</div>
+      <div class="country-info">
+        <div class="country-name">
+          Cabo Verde
+          <span class="lang-badge">PT</span>
+        </div>
+        <div class="country-subname">República de Cabo Verde</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🚨 Emergência Geral & Saúde</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Número Único de Emergência</div>
+            <div class="service-meta">Polícia, Bombeiros e Urgência Médica <span class="badge-24h">24h</span></div>
+          </div>
+          <a href="tel:112" class="btn-call emergency">📞 112</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergência Médica (130) & Bombeiros (131)</div>
+            <div class="service-meta">Ambulância hospitalar e socorro</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:130" class="btn-call emergency">130</a>
+            <a href="tel:131" class="btn-call">131</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== INGLÊS ==================== -->
+
+  <!-- United States -->
+  <div class="country-card" data-lang="en" data-keywords="united states usa eua america english ingles 988 911 suicide crisis lifeline trevor crisis text line 741741 new york california florida texas">
+    <div class="country-header">
+      <div class="country-flag">🇺🇸</div>
+      <div class="country-info">
+        <div class="country-name">
+          United States
+          <span class="lang-badge">EN</span>
+        </div>
+        <div class="country-subname">United States of America</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Suicide & Crisis Lifeline</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">988 Suicide & Crisis Lifeline</div>
+            <div class="service-meta">Call or text (English & Spanish) <span class="badge-24h">24/7</span><span class="badge-free">Toll-free</span></div>
+          </div>
+          <a href="tel:988" class="btn-call crisis">📞 988</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Crisis Text Line</div>
+            <div class="service-meta">Text <strong>HOME</strong> to 741741 <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="sms:741741?&body=HOME" class="btn-call">💬 741741</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">The Trevor Project (LGBTQ+ Crisis)</div>
+            <div class="service-meta">Call or text <strong>START</strong> to 678-678 <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:18664887386" class="btn-call">📞 1-866-488-7386</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 General Emergency</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergency Services (Police, Fire, EMS)</div>
+            <div class="service-meta">Immediate life-threatening situations <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:911" class="btn-call emergency">📞 911</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- United Kingdom -->
+  <div class="country-card" data-lang="en" data-keywords="united kingdom uk england scotland wales britain ingles english 116123 samaritans 999 112 111 nhs shout 85258 papyrus london manchester">
+    <div class="country-header">
+      <div class="country-flag">🇬🇧</div>
+      <div class="country-info">
+        <div class="country-name">
+          United Kingdom
+          <span class="lang-badge">EN</span>
+        </div>
+        <div class="country-subname">Great Britain & Northern Ireland</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Suicide Prevention & Crisis Support</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Samaritans</div>
+            <div class="service-meta">Free, confidential emotional support <span class="badge-24h">24/7</span><span class="badge-free">Free</span></div>
+          </div>
+          <a href="tel:116123" class="btn-call crisis">📞 116 123</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">NHS Mental Health Services</div>
+            <div class="service-meta">Dial 111 and select mental health option <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:111" class="btn-call">📞 111</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Shout Crisis Text Line</div>
+            <div class="service-meta">Text <strong>SHOUT</strong> to 85258 <span class="badge-24h">24/7</span><span class="badge-free">Free</span></div>
+          </div>
+          <a href="sms:85258?&body=SHOUT" class="btn-call">💬 85258</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergency Services</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergency (Police, Ambulance, Fire)</div>
+            <div class="service-meta">Critical emergency dispatch <span class="badge-24h">24/7</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:999" class="btn-call emergency">📞 999</a>
+            <a href="tel:112" class="btn-call emergency">112</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canada -->
+  <div class="country-card" data-lang="en" data-keywords="canada canadian english francais en fr 988 911 kids help phone toronto montreal vancouver ottawa quebec">
+    <div class="country-header">
+      <div class="country-flag">🇨🇦</div>
+      <div class="country-info">
+        <div class="country-name">
+          Canada
+          <span class="lang-badge">EN / FR</span>
+        </div>
+        <div class="country-subname">Canada (Bilingual Support)</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Suicide Crisis Helpline / Ligne de crise</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">9-8-8 Suicide Crisis Helpline</div>
+            <div class="service-meta">Call or text in English or French <span class="badge-24h">24/7</span><span class="badge-free">Toll-free</span></div>
+          </div>
+          <a href="tel:988" class="btn-call crisis">📞 988</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Hope for Wellness (Indigenous)</div>
+            <div class="service-meta">First Nations, Inuit & Métis support <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:18552423310" class="btn-call">📞 1-855-242-3310</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Québec — Ligne prévention du suicide</div>
+            <div class="service-meta">1 866 APPELLE (Partout au Québec) <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:18662773553" class="btn-call">📞 1-866-277-3553</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 General Emergency</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergency (911)</div>
+            <div class="service-meta">Police, Pompiers & Ambulance <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:911" class="btn-call emergency">📞 911</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Australia -->
+  <div class="country-card" data-lang="en" data-keywords="australia australian english ingles 131114 lifeline 000 1300224636 beyond blue sydney melbourne brisbane perth">
+    <div class="country-header">
+      <div class="country-flag">🇦🇺</div>
+      <div class="country-info">
+        <div class="country-name">
+          Australia
+          <span class="lang-badge">EN</span>
+        </div>
+        <div class="country-subname">Commonwealth of Australia</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Crisis Support & Suicide Prevention</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Lifeline Australia</div>
+            <div class="service-meta">Call 13 11 14 or text 0477 13 11 14 <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:131114" class="btn-call crisis">📞 13 11 14</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Suicide Call Back Service</div>
+            <div class="service-meta">Nationwide telephone counselling <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:1300659467" class="btn-call">📞 1300 659 467</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">13YARN (Indigenous Support)</div>
+            <div class="service-meta">Aboriginal & Torres Strait Islander support <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:139276" class="btn-call">📞 13 92 76</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 General Emergency</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Triple Zero (000)</div>
+            <div class="service-meta">Police, Fire & Ambulance <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:000" class="btn-call emergency">📞 000</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Zealand -->
+  <div class="country-card" data-lang="en" data-keywords="new zealand aotearoa maori english 1737 lifeline 111 0800543354 auckland wellington christchurch">
+    <div class="country-header">
+      <div class="country-flag">🇳🇿</div>
+      <div class="country-info">
+        <div class="country-name">
+          New Zealand / Aotearoa
+          <span class="lang-badge">EN</span>
+        </div>
+        <div class="country-subname">Aotearoa New Zealand</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Mental Health & Crisis Support</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">1737 Need to Talk?</div>
+            <div class="service-meta">Free call or text 1737 <span class="badge-24h">24/7</span><span class="badge-free">Free</span></div>
+          </div>
+          <a href="tel:1737" class="btn-call crisis">📞 1737</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Lifeline Aotearoa</div>
+            <div class="service-meta">Call 0800 543 354 or text HELP (4357) <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:0800543354" class="btn-call">📞 0800 543 354</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 General Emergency</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergency Services (111)</div>
+            <div class="service-meta">Police, Fire & Ambulance <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:111" class="btn-call emergency">📞 111</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ireland -->
+  <div class="country-card" data-lang="en" data-keywords="ireland eire irish gaeilge english 116123 samaritans pieta house 1800247247 999 112 dublin cork galway">
+    <div class="country-header">
+      <div class="country-flag">🇮🇪</div>
+      <div class="country-info">
+        <div class="country-name">
+          Ireland / Éire
+          <span class="lang-badge">EN</span>
+        </div>
+        <div class="country-subname">Republic of Ireland</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Crisis & Suicide Prevention</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Samaritans Ireland</div>
+            <div class="service-meta">Confidential emotional listening <span class="badge-24h">24/7</span><span class="badge-free">Free</span></div>
+          </div>
+          <a href="tel:116123" class="btn-call crisis">📞 116 123</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Pieta House Crisis Line</div>
+            <div class="service-meta">Suicide & self-harm crisis support <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:1800247247" class="btn-call">📞 1800 247 247</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergency Services</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergency (999 / 112)</div>
+            <div class="service-meta">Gardaí, Ambulance, Fire <span class="badge-24h">24/7</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:999" class="btn-call emergency">📞 999</a>
+            <a href="tel:112" class="btn-call emergency">112</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- South Africa -->
+  <div class="country-card" data-lang="en" data-keywords="south africa suid-afrika english sadag 0800567567 112 10111 10177 johannesburg cape town durban">
+    <div class="country-header">
+      <div class="country-flag">🇿🇦</div>
+      <div class="country-info">
+        <div class="country-name">
+          South Africa
+          <span class="lang-badge">EN</span>
+        </div>
+        <div class="country-subname">Republic of South Africa</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Suicide Crisis & Mental Health</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">SADAG Suicide Crisis Helpline</div>
+            <div class="service-meta">Depression & anxiety support <span class="badge-24h">24/7</span><span class="badge-free">Toll-free</span></div>
+          </div>
+          <a href="tel:0800567567" class="btn-call crisis">📞 0800 567 567</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Cipla Mental Health Helpline</div>
+            <div class="service-meta">Emotional crisis guidance <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:0800456789" class="btn-call">📞 0800 456 789</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergency Services</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergency (112 mobile / 10111 police)</div>
+            <div class="service-meta">Police and ambulance dispatch</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:112" class="btn-call emergency">112</a>
+            <a href="tel:10111" class="btn-call emergency">10111</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Singapore -->
+  <div class="country-card" data-lang="en" data-keywords="singapore singapura english 1767 sos samaritans 91511767 995 999">
+    <div class="country-header">
+      <div class="country-flag">🇸🇬</div>
+      <div class="country-info">
+        <div class="country-name">
+          Singapore
+          <span class="lang-badge">EN</span>
+        </div>
+        <div class="country-subname">Republic of Singapore</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 24-Hour Crisis Support</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Samaritans of Singapore (SOS)</div>
+            <div class="service-meta">24-hour hotline & WhatsApp 9151 1767 <span class="badge-24h">24/7</span><span class="badge-free">Free</span></div>
+          </div>
+          <a href="tel:1767" class="btn-call crisis">📞 1767</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergency Services</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Ambulance/Fire (995) & Police (999)</div>
+            <div class="service-meta">Immediate emergency response <span class="badge-24h">24/7</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:995" class="btn-call emergency">📞 995</a>
+            <a href="tel:999" class="btn-call emergency">999</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ESPANHOL ==================== -->
+
+  <!-- España -->
+  <div class="country-card" data-lang="es" data-keywords="espana spain espanol 024 112 717003717 telefono de la esperanza anar 900202010 061 091 madrid barcelona valencia sevilla">
+    <div class="country-header">
+      <div class="country-flag">🇪🇸</div>
+      <div class="country-info">
+        <div class="country-name">
+          España
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">Reino de España</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Prevención del Suicidio & Salud Mental</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Línea 024 — Conducta Suicida</div>
+            <div class="service-meta">Ministerio de Sanidad <span class="badge-24h">24h</span><span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:024" class="btn-call crisis">📞 024</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Teléfono de la Esperanza</div>
+            <div class="service-meta">Escucha activa y crisis emocional <span class="badge-24h">24h</span></div>
+          </div>
+          <a href="tel:717003717" class="btn-call">📞 717 003 717</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias Generales</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergencias Europeo (112)</div>
+            <div class="service-meta">Urgencias sanitarias, bomberos y policía <span class="badge-24h">24h</span></div>
+          </div>
+          <a href="tel:112" class="btn-call emergency">📞 112</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- México -->
+  <div class="country-card" data-lang="es" data-keywords="mexico mexicano espanol 8009112000 linea de la vida 911 locatel 0311 saptel ciudad de mexico guadalajara monterrey puebla">
+    <div class="country-header">
+      <div class="country-flag">🇲🇽</div>
+      <div class="country-info">
+        <div class="country-name">
+          México
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">Estados Unidos Mexicanos</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Prevención del Suicidio & Apoyo Emocional</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Línea de la Vida (CONASAMA)</div>
+            <div class="service-meta">Atención psicológica nacional <span class="badge-24h">24/7</span><span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:8009112000" class="btn-call crisis">📞 800 911 2000</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">LOCATEL (Apoyo Psicológico)</div>
+            <div class="service-meta">Marcación rápida o 55 5658 1111 <span class="badge-24h">24h</span></div>
+          </div>
+          <a href="tel:*0311" class="btn-call">📞 *0311</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Número Único de Emergencias (911)</div>
+            <div class="service-meta">Ambulancias, bomberos y policía <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:911" class="btn-call emergency">📞 911</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Colombia -->
+  <div class="country-card" data-lang="es" data-keywords="colombia bogota medellin cali barranquilla espanol 106 192 linea de la esperanza 123">
+    <div class="country-header">
+      <div class="country-flag">🇨🇴</div>
+      <div class="country-info">
+        <div class="country-name">
+          Colombia
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">República de Colombia</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Apoyo Emocional & Salud Mental</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Línea 106 "El poder de ser escuchado"</div>
+            <div class="service-meta">Orientación y ayuda psicológica <span class="badge-24h">24h</span><span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:106" class="btn-call crisis">📞 106</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Línea 192 (Ministerio de Salud)</div>
+            <div class="service-meta">Marcar 192 y presionar opción 4 <span class="badge-24h">24h</span></div>
+          </div>
+          <a href="tel:192" class="btn-call">📞 192</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Número Único de Seguridad (123)</div>
+            <div class="service-meta">Policía, bomberos y ambulancias <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:123" class="btn-call emergency">📞 123</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chile -->
+  <div class="country-card" data-lang="es" data-keywords="chile santiago valparaiso concepcion espanol 4141 *4141 fono salud responde 6003607777 samu 131 132 133 carabineros">
+    <div class="country-header">
+      <div class="country-flag">🇨🇱</div>
+      <div class="country-info">
+        <div class="country-name">
+          Chile
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">República de Chile</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Prevención del Suicidio & Salud Mental</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Línea de Prevención del Suicidio (*4141)</div>
+            <div class="service-meta">Gratuito desde celulares "No Estás Solo" <span class="badge-24h">24/7</span><span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:*4141" class="btn-call crisis">📞 *4141</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Fono Salud Responde (MINSAL)</div>
+            <div class="service-meta">Orientación médica y psicológica <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:6003607777" class="btn-call">📞 600 360 7777</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias Médicas & Policiales</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">SAMU (131) & Carabineros (133)</div>
+            <div class="service-meta">Ambulancias y policía chilena</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:131" class="btn-call emergency">131</a>
+            <a href="tel:133" class="btn-call emergency">133</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Argentina -->
+  <div class="country-card" data-lang="es" data-keywords="argentina buenos aires cordoba rosario mendoza espanol 135 08009990091 cas centro asistencia al suicida same 107 911">
+    <div class="country-header">
+      <div class="country-flag">🇦🇷</div>
+      <div class="country-info">
+        <div class="country-name">
+          Argentina
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">República Argentina</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Salud Mental & Prevención del Suicidio</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Línea Nacional de Salud Mental</div>
+            <div class="service-meta">Ministerio de Salud de la Nación <span class="badge-24h">24h</span><span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:08009990091" class="btn-call crisis">📞 0800-999-0091</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Centro de Asistencia al Suicida (CAS)</div>
+            <div class="service-meta">135 (CABA/GBA) o desde el interior del país</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:135" class="btn-call">135</a>
+            <a href="tel:08003451435" class="btn-call">0800-345-1435</a>
+          </div>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">SAME (107) & Emergencias (911)</div>
+            <div class="service-meta">Ambulancias médicas y policía <span class="badge-24h">24h</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:107" class="btn-call emergency">📞 107</a>
+            <a href="tel:911" class="btn-call emergency">911</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Perú -->
+  <div class="country-card" data-lang="es" data-keywords="peru lima arequipa trujillo cusco espanol 113 salud mental samu 106 105 policia">
+    <div class="country-header">
+      <div class="country-flag">🇵🇪</div>
+      <div class="country-info">
+        <div class="country-name">
+          Perú
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">República del Perú</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Apoyo Psicológico & Salud Mental</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Línea 113 Salud (Opción 5)</div>
+            <div class="service-meta">Ministerio de Salud del Perú <span class="badge-24h">24h</span><span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:113" class="btn-call crisis">📞 113</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">SAMU Ambulancia (106) & Policía (105)</div>
+            <div class="service-meta">Urgencias médicas y auxilio rápido</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:106" class="btn-call emergency">106</a>
+            <a href="tel:105" class="btn-call emergency">105</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Uruguay -->
+  <div class="country-card" data-lang="es" data-keywords="uruguay montevideo espanol 08000767 *0767 linea vida asse 911">
+    <div class="country-header">
+      <div class="country-flag">🇺🇾</div>
+      <div class="country-info">
+        <div class="country-name">
+          Uruguay
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">República Oriental del Uruguay</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Prevención del Suicidio & Apoyo Emocional</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Línea Vida (ASSE)</div>
+            <div class="service-meta">Marcar 0800 0767 o *0767 desde celular <span class="badge-24h">24h</span><span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:08000767" class="btn-call crisis">📞 *0767</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Servicio de Emergencias (911)</div>
+            <div class="service-meta">Policía, bomberos y emergencias médicas <span class="badge-24h">24h</span></div>
+          </div>
+          <a href="tel:911" class="btn-call emergency">📞 911</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ecuador -->
+  <div class="country-card" data-lang="es" data-keywords="ecuador quito guayaquil cuenca espanol 171 opcion 6 salud mental ecu 911">
+    <div class="country-header">
+      <div class="country-flag">🇪🇨</div>
+      <div class="country-info">
+        <div class="country-name">
+          Ecuador
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">República del Ecuador</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Primeros Auxilios Psicológicos</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Ministerio de Salud Pública (171 Opción 6)</div>
+            <div class="service-meta">Apoyo psicológico y agendamiento</div>
+          </div>
+          <a href="tel:171" class="btn-call crisis">📞 171</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">ECU 911 (Seguridad Integrada)</div>
+            <div class="service-meta">Atención de emergencias y primeros auxilios <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:911" class="btn-call emergency">📞 911</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Costa Rica -->
+  <div class="country-card" data-lang="es" data-keywords="costa rica san jose espanol 911 8002737869 aqui estoy psicologia 22723774">
+    <div class="country-header">
+      <div class="country-flag">🇨🇷</div>
+      <div class="country-info">
+        <div class="country-name">
+          Costa Rica
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">República de Costa Rica</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Apoyo Psicológico & Prevención</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Línea "Aquí Estoy" (Colegio de Psicólogos)</div>
+            <div class="service-meta">Atención gratuita (Lunes a Viernes 14h–22h) <span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:8002737869" class="btn-call crisis">📞 800-273-7869</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias & Despacho Psicológico</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Sistema de Emergencias (9-1-1)</div>
+            <div class="service-meta">Despacho de apoyo psicológico inmediato <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:911" class="btn-call emergency">📞 911</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Venezuela -->
+  <div class="country-card" data-lang="es" data-keywords="venezuela caracas valencia maracaibo espanol 02418433308 04242907338 lapsi 911">
+    <div class="country-header">
+      <div class="country-flag">🇻🇪</div>
+      <div class="country-info">
+        <div class="country-name">
+          Venezuela
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">República Bolivariana de Venezuela</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Primeros Auxilios Psicológicos</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergencias en Salud Mental</div>
+            <div class="service-meta">Línea de atención y contención en crisis</div>
+          </div>
+          <a href="tel:02418433308" class="btn-call crisis">📞 0241-8433308</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">LAPSI (Federación de Psicólogos)</div>
+            <div class="service-meta">Viernes a domingo de 08:00 a 20:00</div>
+          </div>
+          <a href="tel:04242907338" class="btn-call">📞 0424-2907338</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergencias Nacionales (911)</div>
+            <div class="service-meta">Policía, protección civil y ambulancias <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:911" class="btn-call emergency">📞 911</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- República Dominicana -->
+  <div class="country-card" data-lang="es" data-keywords="republica dominicana santo domingo santiago espanol 8092001400 811 911 cuida tu salud mental">
+    <div class="country-header">
+      <div class="country-flag">🇩🇴</div>
+      <div class="country-info">
+        <div class="country-name">
+          República Dominicana
+          <span class="lang-badge">ES</span>
+        </div>
+        <div class="country-subname">República Dominicana</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Salud Mental & Apoyo Psicológico</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Cuida tu Salud Mental (MSP)</div>
+            <div class="service-meta">Lunes a domingo 08:00 a 00:00 <span class="badge-free">Gratuito</span></div>
+          </div>
+          <a href="tel:8092001400" class="btn-call crisis">📞 809-200-1400</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Emergencias</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Sistema Nacional de Emergencias (911)</div>
+            <div class="service-meta">Atención médica urgente y seguridad <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:911" class="btn-call emergency">📞 911</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FRANCÊS ==================== -->
+
+  <!-- France -->
+  <div class="country-card" data-lang="fr" data-keywords="france francaise paris lyon marseille 3114 samu 15 112 17 18 sos amitie fr">
+    <div class="country-header">
+      <div class="country-flag">🇫🇷</div>
+      <div class="country-info">
+        <div class="country-name">
+          France
+          <span class="lang-badge">FR</span>
+        </div>
+        <div class="country-subname">République française</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Prévention du Suicide & Écoute</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Numéro National de Prévention du Suicide</div>
+            <div class="service-meta">Écoute confidentielle et professionnelle <span class="badge-24h">24/7</span><span class="badge-free">Gratuit</span></div>
+          </div>
+          <a href="tel:3114" class="btn-call crisis">📞 3114</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">SOS Amitié</div>
+            <div class="service-meta">Écoute anonyme bénévole <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:0972394050" class="btn-call">📞 09 72 39 40 50</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Urgences Générales & SAMU</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">SAMU (15) & Urgence Européenne (112)</div>
+            <div class="service-meta">Urgences médicales vitales <span class="badge-24h">24/7</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:15" class="btn-call emergency">📞 15</a>
+            <a href="tel:112" class="btn-call emergency">112</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Belgique / België -->
+  <div class="country-card" data-lang="fr" data-keywords="belgique belgie brussels bruxelles francaise nederlands 080032123 1813 zelfmoordlijn 112 fr nl">
+    <div class="country-header">
+      <div class="country-flag">🇧🇪</div>
+      <div class="country-info">
+        <div class="country-name">
+          Belgique / België
+          <span class="lang-badge">FR / NL</span>
+        </div>
+        <div class="country-subname">Royaume de Belgique / Koninkrijk België</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Prévention du Suicide / Zelfmoordpreventie</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Centre de Prévention du Suicide (FR)</div>
+            <div class="service-meta">Écoute gratuite et anonyme <span class="badge-24h">24/7</span><span class="badge-free">Gratuit</span></div>
+          </div>
+          <a href="tel:080032123" class="btn-call crisis">📞 0800 32 123</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Zelfmoordlijn 1813 (NL)</div>
+            <div class="service-meta">Vlaanderen preventiehulplijn <span class="badge-24h">24/7</span><span class="badge-free">Gratis</span></div>
+          </div>
+          <a href="tel:1813" class="btn-call crisis">📞 1813</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Urgences / Nooddienst</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Numéro d'Urgence Européen (112)</div>
+            <div class="service-meta">Ambulance et Pompiers <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:112" class="btn-call emergency">📞 112</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Suisse / Schweiz / Svizzera -->
+  <div class="country-card" data-lang="fr" data-keywords="suisse schweiz svizzera switzerland 143 la main tendue die dargebotene hand telefono amico 144 112 geneve zurich bern fr de it">
+    <div class="country-header">
+      <div class="country-flag">🇨🇭</div>
+      <div class="country-info">
+        <div class="country-name">
+          Suisse / Schweiz / Svizzera
+          <span class="lang-badge">FR / DE / IT</span>
+        </div>
+        <div class="country-subname">Confédération suisse</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Écoute & Crise / Die Dargebotene Hand</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">La Main Tendue / Telefono Amico (143)</div>
+            <div class="service-meta">Ligne de crise trilingue <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:143" class="btn-call crisis">📞 143</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Pro Juventute (Jeunes / Kinder & Jugend)</div>
+            <div class="service-meta">Conseils aux enfants et jeunes <span class="badge-24h">24/7</span><span class="badge-free">Gratuit</span></div>
+          </div>
+          <a href="tel:147" class="btn-call">📞 147</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Urgences / Notruf</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Ambulance (144) & Urgence Européenne (112)</div>
+            <div class="service-meta">Secours d'urgence médicale</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:144" class="btn-call emergency">📞 144</a>
+            <a href="tel:112" class="btn-call emergency">112</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ALEMÃO ==================== -->
+
+  <!-- Deutschland -->
+  <div class="country-card" data-lang="de" data-keywords="deutschland germany deutsch 08001110111 08001110222 116123 telefonseelsorge 112 110 berlin munchen hamburg frankfurt de">
+    <div class="country-header">
+      <div class="country-flag">🇩🇪</div>
+      <div class="country-info">
+        <div class="country-name">
+          Deutschland
+          <span class="lang-badge">DE</span>
+        </div>
+        <div class="country-subname">Bundesrepublik Deutschland</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Telefonseelsorge & Krisenhilfe</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">TelefonSeelsorge</div>
+            <div class="service-meta">Kostenlos, anonym und vertraulich <span class="badge-24h">24/7</span><span class="badge-free">Kostenfrei</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:08001110111" class="btn-call crisis">0800 111 0 111</a>
+            <a href="tel:116123" class="btn-call crisis">116 123</a>
+          </div>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Nummer gegen Kummer (Kinder & Jugend)</div>
+            <div class="service-meta">Mo–Sa 14–20 Uhr <span class="badge-free">Kostenfrei</span></div>
+          </div>
+          <a href="tel:116111" class="btn-call">📞 116 111</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Notruf & Rettungsdienst</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Feuerwehr/Rettung (112) & Polizei (110)</div>
+            <div class="service-meta">Akute Lebensgefahr und Notfälle <span class="badge-24h">24/7</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:112" class="btn-call emergency">📞 112</a>
+            <a href="tel:110" class="btn-call emergency">110</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Österreich -->
+  <div class="country-card" data-lang="de" data-keywords="oesterreich austria wien vienna salzburg graz deutsch 142 telefonseelsorge kriseninterventionszentrum 112 144 de">
+    <div class="country-header">
+      <div class="country-flag">🇦🇹</div>
+      <div class="country-info">
+        <div class="country-name">
+          Österreich
+          <span class="lang-badge">DE</span>
+        </div>
+        <div class="country-subname">Republik Österreich</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Telefonseelsorge & Krisenhilfe</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Telefonseelsorge Österreich</div>
+            <div class="service-meta">Rund um die Uhr ohne Vorwahl <span class="badge-24h">24/7</span><span class="badge-free">Kostenlos</span></div>
+          </div>
+          <a href="tel:142" class="btn-call crisis">📞 142</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Kriseninterventionszentrum Wien</div>
+            <div class="service-meta">Unterstützung in akuten Lebenskrisen</div>
+          </div>
+          <a href="tel:014069595" class="btn-call">📞 01 406 95 95</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Euronotruf & Rettung</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Rettungsdienst (144) & Notruf (112)</div>
+            <div class="service-meta">Medizinische Notfallrettung <span class="badge-24h">24/7</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:144" class="btn-call emergency">📞 144</a>
+            <a href="tel:112" class="btn-call emergency">112</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ITALIANO ==================== -->
+
+  <!-- Italia -->
+  <div class="country-card" data-lang="it" data-keywords="italia italy roma milano napoli torino italiano it 0223272327 telefono amico 0677208977 samaritans 112 118 soccorso">
+    <div class="country-header">
+      <div class="country-flag">🇮🇹</div>
+      <div class="country-info">
+        <div class="country-name">
+          Italia
+          <span class="lang-badge">IT</span>
+        </div>
+        <div class="country-subname">Repubblica Italiana</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Supporto Emotivo & Prevenzione del Suicidio</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Telefono Amico Italia</div>
+            <div class="service-meta">Ascolto e supporto emotivo continuo <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:0223272327" class="btn-call crisis">📞 02 2327 2327</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Samaritans OdV</div>
+            <div class="service-meta">Tutti i giorni dalle 13:00 alle 22:00</div>
+          </div>
+          <a href="tel:0677208977" class="btn-call">📞 06 7720 8977</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Numero Unico Europeo & Sanitario</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Emergenza Unica (112) & Sanitaria (118)</div>
+            <div class="service-meta">Pronto intervento e ambulanza <span class="badge-24h">24/7</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:112" class="btn-call emergency">📞 112</a>
+            <a href="tel:118" class="btn-call emergency">118</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JAPONÊS ==================== -->
+
+  <!-- 日本 (Japan) -->
+  <div class="country-card" data-lang="ja" data-keywords="japan nihon nippon 日本 日本語 0120-061-338 0120-279-338 0570-064-556 0120-783-556 119 110 inochi yorisoi tokyo tokyo osaka ja">
+    <div class="country-header">
+      <div class="country-flag">🇯🇵</div>
+      <div class="country-info">
+        <div class="country-name">
+          日本 (Japan)
+          <span class="lang-badge">JA / 日本語</span>
+        </div>
+        <div class="country-subname">Japan / 日本国</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 こころの相談・自殺防止ホットライン</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">#いのちSOS (Lifelink)</div>
+            <div class="service-meta">通話料無料・年中無休 <span class="badge-24h">24時間</span><span class="badge-free">通話無料</span></div>
+          </div>
+          <a href="tel:0120061338" class="btn-call crisis">📞 0120-061-338</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">よりそいホットライン (多言語対応)</div>
+            <div class="service-meta">外国語対応はガイダンス後に「2」を押下 <span class="badge-24h">24時間</span></div>
+          </div>
+          <a href="tel:0120279338" class="btn-call">📞 0120-279-338</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">いのちの電話</div>
+            <div class="service-meta">毎日16:00〜21:00 (毎月10日は24時間対応)</div>
+          </div>
+          <a href="tel:0120783556" class="btn-call">📞 0120-783-556</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 緊急通報 (Emergency)</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">救急・消防 (119) & 警察 (110)</div>
+            <div class="service-meta">生命の危機・重大事故の救急通報 <span class="badge-24h">24時間</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:119" class="btn-call emergency">📞 119</a>
+            <a href="tel:110" class="btn-call emergency">110</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== COREANO ==================== -->
+
+  <!-- 대한민국 (South Korea) -->
+  <div class="country-card" data-lang="ko" data-keywords="korea south korea 대한민국 한국 한국어 109 1577-0199 1588-9191 119 112 seoul busan ko">
+    <div class="country-header">
+      <div class="country-flag">🇰🇷</div>
+      <div class="country-info">
+        <div class="country-name">
+          대한민국 (South Korea)
+          <span class="lang-badge">KO / 한국어</span>
+        </div>
+        <div class="country-subname">Republic of Korea</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 자살예방 및 정신건강 위기상담</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">자살예방 상담전화 (109)</div>
+            <div class="service-meta">보건복지부 통합 국가 상담번호 <span class="badge-24h">24시간</span><span class="badge-free">통화무료</span></div>
+          </div>
+          <a href="tel:109" class="btn-call crisis">📞 109</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">정신건강 위기상담전화</div>
+            <div class="service-meta">전문 심리상담 및 위기개입 지원 <span class="badge-24h">24시간</span></div>
+          </div>
+          <a href="tel:15770199" class="btn-call">📞 1577-0199</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">한국생명의전화</div>
+            <div class="service-meta">사회공헌 상담 핫라인 <span class="badge-24h">24시간</span></div>
+          </div>
+          <a href="tel:15889191" class="btn-call">📞 1588-9191</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 긴급신고 (Emergency)</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">소방·119구급대 (119) & 경찰 (112)</div>
+            <div class="service-meta">응급의료구조 및 치안 안전 <span class="badge-24h">24시간</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:119" class="btn-call emergency">📞 119</a>
+            <a href="tel:112" class="btn-call emergency">112</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== RUSSO ==================== -->
+
+  <!-- Россия (Russia) -->
+  <div class="country-card" data-lang="ru" data-keywords="russia россия русский ru 8-800-2000-122 88002000122 88002501859 112 103 moscow moscou spb saint petersburg">
+    <div class="country-header">
+      <div class="country-flag">🇷🇺</div>
+      <div class="country-info">
+        <div class="country-name">
+          Россия (Russia)
+          <span class="lang-badge">RU / Русский</span>
+        </div>
+        <div class="country-subname">Российская Федерация</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Психологическая помощь & Телефон доверия</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Единый телефон доверия</div>
+            <div class="service-meta">Бесплатно по всей России <span class="badge-24h">24/7</span><span class="badge-free">Бесплатно</span></div>
+          </div>
+          <a href="tel:88002000122" class="btn-call crisis">📞 8 800 2000 122</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Горячая линия Красного Креста</div>
+            <div class="service-meta">Психологическая поддержка при кризисе <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:88002501859" class="btn-call">📞 8 800 250 18 59</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Экстренные службы</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Единый номер спасения (112) & Скорая (103)</div>
+            <div class="service-meta">Экстренная медицинская помощь <span class="badge-24h">24/7</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:112" class="btn-call emergency">📞 112</a>
+            <a href="tel:103" class="btn-call emergency">103</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Казахстан (Kazakhstan) -->
+  <div class="country-card" data-lang="ru" data-keywords="kazakhstan казахстан казакстан astana almaty русский ru kz 111 150 112 103">
+    <div class="country-header">
+      <div class="country-flag">🇰🇿</div>
+      <div class="country-info">
+        <div class="country-name">
+          Казахстан / Қазақстан
+          <span class="lang-badge">RU / KK</span>
+        </div>
+        <div class="country-subname">Республика Казахстан</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Линия доверия & Поддержка</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Национальная линия доверия (111)</div>
+            <div class="service-meta">Правовая и психологическая помощь <span class="badge-24h">24/7</span><span class="badge-free">Бесплатно</span></div>
+          </div>
+          <a href="tel:111" class="btn-call crisis">📞 111</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Телефон доверия для молодежи (150)</div>
+            <div class="service-meta">Консультации в кризисных ситуациях <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:150" class="btn-call">📞 150</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Экстренные службы</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Служба спасения (112) & Скорая (103)</div>
+            <div class="service-meta">Единая диспетчерская служба</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:112" class="btn-call emergency">📞 112</a>
+            <a href="tel:103" class="btn-call emergency">103</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Беларусь (Belarus) -->
+  <div class="country-card" data-lang="ru" data-keywords="belarus беларусь minsk русский ru be 80173524444 88011001611 112 103">
+    <div class="country-header">
+      <div class="country-flag">🇧🇾</div>
+      <div class="country-info">
+        <div class="country-name">
+          Беларусь (Belarus)
+          <span class="lang-badge">RU / BE</span>
+        </div>
+        <div class="country-subname">Республика Беларусь</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Экстренная психологическая помощь</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Телефон доверия (Минск & Регионы)</div>
+            <div class="service-meta">Круглосуточная экстренная помощь <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:80173524444" class="btn-call crisis">📞 8-017-352-44-44</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Экстренные службы</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Служба спасения МЧС (112) & Скорая (103)</div>
+            <div class="service-meta">Единый экстренный вызов</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:112" class="btn-call emergency">📞 112</a>
+            <a href="tel:103" class="btn-call emergency">103</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HINDI (ÍNDIA) ==================== -->
+
+  <!-- भारत / India -->
+  <div class="country-card" data-lang="hi" data-keywords="india bharat भारत हिन्दी hindi 14416 18008914416 tele manas kiran 18005990019 112 delhi mumbai kolkata bangalore hi">
+    <div class="country-header">
+      <div class="country-flag">🇮🇳</div>
+      <div class="country-info">
+        <div class="country-name">
+          भारत / India
+          <span class="lang-badge">HI / हिन्दी</span>
+        </div>
+        <div class="country-subname">Republic of India</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 मानसिक स्वास्थ्य परामर्श एवं संकट सहायता</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Tele-MANAS (राष्ट्रीय हेल्पलाइन)</div>
+            <div class="service-meta">स्वास्थ्य मंत्रालय भारत सरकार <span class="badge-24h">24/7</span><span class="badge-free">टोल-फ्री</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:14416" class="btn-call crisis">📞 14416</a>
+            <a href="tel:18008914416" class="btn-call crisis">1800-891-4416</a>
+          </div>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">KIRAN (मानसिक स्वास्थ्य पुनर्वास)</div>
+            <div class="service-meta">सामाजिक न्याय मंत्रालय (13+ भाषाओं में) <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:18005990019" class="btn-call">📞 1800-599-0019</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Vandrevala Foundation</div>
+            <div class="service-meta">निःशुल्क मानसिक स्वास्थ्य परामर्श <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:9999666555" class="btn-call">📞 9999 666 555</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 राष्ट्रीय आपातकालीन सेवा</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">एकीकृत आपातकालीन नंबर (112)</div>
+            <div class="service-meta">एम्बुलेंस, पुलिस और अग्निशमन सेवा <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:112" class="btn-call emergency">📞 112</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BENGALI ==================== -->
+
+  <!-- বাংলাদেশ (Bangladesh) -->
+  <div class="country-card" data-lang="bn" data-keywords="bangladesh বাংলাদেশ বাংলা bengali bn 01779554391 09638881888 kaan pete roi talk hope 999 109 dhaka chittagong">
+    <div class="country-header">
+      <div class="country-flag">🇧🇩</div>
+      <div class="country-info">
+        <div class="country-name">
+          বাংলাদেশ / Bangladesh
+          <span class="lang-badge">BN / বাংলা</span>
+        </div>
+        <div class="country-subname">People's Republic of Bangladesh</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 মানসিক স্বাস্থ্য ও আবেগীয় সহায়তা</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Kaan Pete Roi (কান পেতে রই)</div>
+            <div class="service-meta">মানসিক স্বাস্থ্য ও আত্মহত্যা প্রতিরোধ হেল্পলাইন</div>
+          </div>
+          <a href="tel:+8801779554391" class="btn-call crisis">📞 01779-554391</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Talk Hope Bangladesh</div>
+            <div class="service-meta">বিনামূল্যে মানসিক স্বাস্থ্য সহায়তা <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:09638881888" class="btn-call">📞 09638-881888</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 জাতীয় জরুরি সেবা</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">জাতীয় জরুরি সেবা (999)</div>
+            <div class="service-meta">পুলিশ, অ্যাম্বুলেন্স ও ফায়ার সার্ভিস <span class="badge-24h">24/7</span><span class="badge-free">টোল-ফ্রি</span></div>
+          </div>
+          <a href="tel:999" class="btn-call emergency">📞 999</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== INDONÉSIO ==================== -->
+
+  <!-- Indonesia -->
+  <div class="country-card" data-lang="id" data-keywords="indonesia indonesian bahasa sejiwa healing119 119 lisa helpline 08113855472 112 118 110 jakarta surabaya bandung bali id">
+    <div class="country-header">
+      <div class="country-flag">🇮🇩</div>
+      <div class="country-info">
+        <div class="country-name">
+          Indonesia
+          <span class="lang-badge">ID / Bahasa</span>
+        </div>
+        <div class="country-subname">Republik Indonesia</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Kesehatan Jiwa & Pencegahan Bunuh Diri</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">SEJIWA / Healing119 (Kemenkes)</div>
+            <div class="service-meta">Hubungi 119 tekan ekstensi 8 <span class="badge-free">Gratis</span></div>
+          </div>
+          <a href="tel:119" class="btn-call crisis">📞 119 (Ext 8)</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">LISA Helpline (Love Inside Suicide Awareness)</div>
+            <div class="service-meta">WhatsApp & Telepon 24 jam <span class="badge-24h">24 Jam</span></div>
+          </div>
+          <a href="tel:+628113855472" class="btn-call">📞 +62 811 3855 472</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Panggilan Darurat Nasional</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Nomor Darurat Terpadu (112) & Ambulans (118)</div>
+            <div class="service-meta">Polisi, medis, dan pemadam kebakaran <span class="badge-24h">24 Jam</span><span class="badge-free">Bebas Pulsa</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:112" class="btn-call emergency">📞 112</a>
+            <a href="tel:118" class="btn-call emergency">118</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VIETNAMITA ==================== -->
+
+  <!-- Việt Nam -->
+  <div class="country-card" data-lang="vi" data-keywords="vietnam viet nam tiếng việt vietnamese ngay mai 0963061414 115 113 114 19001267 hanoi ho chi minh da nang vi">
+    <div class="country-header">
+      <div class="country-flag">🇻🇳</div>
+      <div class="country-info">
+        <div class="country-name">
+          Việt Nam
+          <span class="lang-badge">VI / Tiếng Việt</span>
+        </div>
+        <div class="country-subname">Cộng hòa Xã hội chủ nghĩa Việt Nam</div>
+      </div>
+    </div>
+    <div class="services-group">
+      <div class="service-section-title">🛟 Hỗ trợ tâm lý & Khủng hoảng trầm cảm</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Đường dây nóng Ngày Mai</div>
+            <div class="service-meta">Sơ cứu tâm lý người trầm cảm (08:00 – 20:00) <span class="badge-free">Miễn phí</span></div>
+          </div>
+          <a href="tel:0963061414" class="btn-call crisis">📞 096 306 1414</a>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Tổng đài Quốc gia Bảo vệ Trẻ em</div>
+            <div class="service-meta">Hỗ trợ tư vấn trẻ em và thanh thiếu niên <span class="badge-24h">24/7</span></div>
+          </div>
+          <a href="tel:111" class="btn-call">📞 111</a>
+        </div>
+      </div>
+      <div class="service-section-title">🚨 Cấp cứu & Khẩn cấp quốc gia</div>
+      <div class="service-item">
+        <div class="service-main">
+          <div>
+            <div class="service-title">Cấp cứu Y tế (115) & Cảnh sát (113)</div>
+            <div class="service-meta">Cứu hộ khẩn cấp y tế và an ninh <span class="badge-24h">24/7</span></div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:115" class="btn-call emergency">📞 115</a>
+            <a href="tel:113" class="btn-call emergency">113</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-results" id="noResults">
+    <h3>Nenhum país encontrado</h3>
+    <p>Tente buscar pelo nome em português, nome nativo, código ou pelo número de telefone.</p>
+    <p style="margin-top: 10px;">Se seu país não estiver listado, utilize os diretórios mundiais abaixo.</p>
+  </div>
+
+</div>
+
+<!-- Recursos Internacionais Globais -->
+<div class="global-box">
+  <h2>🌐 Redes Internacionais de Apoio em Crise</h2>
+  <p>Caso o seu país ou território não esteja na lista acima, ou se você estiver no exterior, as organizações globais abaixo fornecem diretórios gratuitos e confidenciais de apoio:</p>
+  <div class="global-links">
+    <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer" class="global-card">
+      <strong>Find A Helpline ↗</strong>
+      <span>Diretório mundial gratuito com linhas de crise em mais de 130 países.</span>
+    </a>
+    <a href="https://www.befrienders.org" target="_blank" rel="noopener noreferrer" class="global-card">
+      <strong>Befrienders Worldwide ↗</strong>
+      <span>Rede global voluntária de apoio emocional e prevenção ao suicídio.</span>
+    </a>
+    <a href="https://www.iasp.info/resources/Crisis_Centres/" target="_blank" rel="noopener noreferrer" class="global-card">
+      <strong>IASP Crisis Centres ↗</strong>
+      <span>Centros de intervenção em crise da Associação Internacional de Prevenção ao Suicídio.</span>
+    </a>
+    <a href="https://www.thetrevorproject.org" target="_blank" rel="noopener noreferrer" class="global-card">
+      <strong>The Trevor Project ↗</strong>
+      <span>Recursos mundiais especializados em apoio e acolhimento à juventude LGBTQ+.</span>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2026 Lumio AI. Esta página destina-se exclusivamente a fornecer canais de utilidade pública e auxílio humano emergencial.</p>
+  <p style="margin-top: 6px;"><a href="index.html">Documentos Legais</a> · <a href="terms.html">Termos de Uso</a> · <a href="privacy.html">Política de Privacidade</a></p>
+</footer>
+
+<script>
+  (function() {
+    const searchInput = document.getElementById('countrySearch');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.country-card');
+    const noResults = document.getElementById('noResults');
+
+    let currentFilter = 'all';
+
+    function normalizeText(str) {
+      return (str || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function applyFilterAndSearch() {
+      const query = normalizeText(searchInput.value.trim());
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const cardLang = card.getAttribute('data-lang') || '';
+        const keywords = normalizeText(card.getAttribute('data-keywords') || '');
+        const cardText = normalizeText(card.textContent);
+
+        const matchesFilter = (currentFilter === 'all') || (cardLang === currentFilter);
+        const matchesQuery = !query || keywords.includes(query) || cardText.includes(query);
+
+        if (matchesFilter && matchesQuery) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (visibleCount === 0) {
+        noResults.style.display = 'block';
+      } else {
+        noResults.style.display = 'none';
+      }
+    }
+
+    searchInput.addEventListener('input', applyFilterAndSearch);
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter') || 'all';
+        applyFilterAndSearch();
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
